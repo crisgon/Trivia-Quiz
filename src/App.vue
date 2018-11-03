@@ -12,7 +12,9 @@ export default {
 };
 </script>
 
-<style>
+<style <style lang="scss">
+// @import 'src/assets/fonts/style.css';
+
 body {
   background-color: #9c27b0;
 }

@@ -1,39 +1,15 @@
 <template>
   <div class="categories">
-    <button class="categorie" @click="start('9')">
-      <img src="../../assets/images/tools.svg" alt="Tools">
-      General
-    </button>
-
-    <button class="categorie" @click="start('10')">
-      <img src="../../assets/images/book.svg" alt="Book">
-      Books
-    </button>
-
-    <button class="categorie"@click="start('11')">
-      <img src="../../assets/images/cinema.svg" alt="Popcorn">
-      Movies
-    </button>
-
-    <button class="categorie"@click="start('12')">
-      <img src="../../assets/images/music.svg" alt="Music notes">
-      Music
-    </button>
-
-    <button class="categorie" @click="start('15')">
-      <img src="../../assets/images/game.svg" alt="Joystic">
-      Games
-    </button>
-
-    <button class="categorie" @click="start('23')">
-      <img src="../../assets/images/history.svg" alt="Paper">
-      History
-    </button>
-
-    <button class="categorie" @click="start('31')">
-      <img src="../../assets/images/pikachu.svg" alt="Pikachu">
-      Animes
-    </button>
+    <router-link to="questions">
+        <button 
+        v-for="categorie in categories" :key="categorie.code"
+        class="categorie" 
+        @click="start(categorie.code)">
+        <img :src="require(`@/assets/images/${categorie.icon}.svg`)" 
+            :alt="categorie.name">
+        {{categorie.name}}
+      </button>
+    </router-link>
   </div>  
 </template>
 
@@ -42,6 +18,48 @@ import { mapActions } from 'vuex';
 import axios from 'axios';
 
 export default {
+  data() {
+    return {
+      categories: [
+        {
+          name: 'General',
+          code: '9',
+          icon: 'tools'
+        },
+        {
+          name: 'Books',
+          code: '10',
+          icon: 'book'
+        },
+        {
+          name: 'Movies',
+          code: '11',
+          icon: 'cinema'
+        },
+        {
+          name: 'Music',
+          code: '12',
+          icon: 'music'
+        },
+        {
+          name: 'Games',
+          code: '15',
+          icon: 'game'
+        },
+        {
+          name: 'History',
+          code: '23',
+          icon: 'history'
+        },
+        {
+          name: 'Animes',
+          code: '31',
+          icon: 'pikachu'
+        }
+      ]
+    };
+  },
+
   methods: {
     ...mapActions(['getQuestions']),
 
@@ -53,7 +71,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.categories {
+.categories a {
   width: 600px;
   position: absolute;
   top: 50%;
@@ -61,6 +79,7 @@ export default {
   transform: translate(-50%, -50%);
   display: flex;
   justify-content: space-around;
+  text-decoration: none;
 }
 .categorie {
   width: 80px;
@@ -85,3 +104,4 @@ export default {
   }
 }
 </style>
+ 
