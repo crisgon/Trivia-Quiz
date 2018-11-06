@@ -10,5 +10,9 @@ export default {
       .then(response => {
         state.questions = response.data.results;
       });
+  },
+
+  ADD_POINT: state => {
+    state.points++;
   }
 };

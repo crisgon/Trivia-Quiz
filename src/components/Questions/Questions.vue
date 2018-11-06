@@ -22,13 +22,15 @@
           <input type="radio" 
                  name="answer"
                  :id="index" 
-                 :value="answer" 
+                 :value="answer"
+                 v-model="currtenAnswer" 
           >
           <label :for="index">{{ answer }}</label>
         </div>
       </div>
-      <button @click="questionIndex++"
-              v-show="questionIndex < 9">
+      <button @click="checkAnswer()"
+              v-show="questionIndex < 9"
+              :disabled="!currtenAnswer">
               Next <i class="far fa-hand-point-right"></i>
       </button>
     </div>
@@ -37,13 +39,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'questions',
   data() {
     return {
       questionIndex: 0,
-      questions: []
+      currtenAnswer: ''
     };
   },
 
@@ -55,6 +57,7 @@ export default {
     },
 
     randomAnswers() {
+      console.log(this.currentQuestion.correct_answer);
       return this.currentQuestion.incorrect_answers
         .concat(this.currentQuestion.correct_answer)
         .sort(() => 0.5 - Math.random());
@@ -62,8 +65,17 @@ export default {
   },
 
   methods: {
+    ...mapActions(['addPoint']),
+
     capitalizeFirstLetter(word) {
       return word.charAt(0).toUpperCase() + word.slice(1);
+    },
+    checkAnswer() {
+      if (this.currtenAnswer == this.currentQuestion.correct_answer) {
+        this.addPoint();
+      }
+      this.currtenAnswer = '';
+      return this.questionIndex++;
     }
   }
 };
