@@ -12,27 +12,33 @@
           </span>
         </div>
         <p class="question-text">
+          {{ questionIndex + 1 }} - 
           {{ currentQuestion.question }}
         </p>
 
-        <div class="answer" 
+        <div class="answer-list" 
              v-for="(answer, index) 
              in randomAnswers"
              :key="index">
-          <input type="radio" 
-                 name="answer"
-                 :id="index" 
-                 :value="answer"
-                 v-model="currtenAnswer" 
-          >
-          <label :for="index">{{ answer }}</label>
+             <div class="answer">
+              <input type="radio" 
+                    name="answer"
+                    :id="index" 
+                    :value="answer"
+                    v-model="currtenAnswer" 
+              >
+              <label :for="index">{{ answer }}</label>
+            </div>
         </div>
       </div>
       <button @click="checkAnswer()"
               v-show="questionIndex < 9"
-              :disabled="!currtenAnswer">
+              :disabled="!currtenAnswer"
+              class="btn-next">
               Next <i class="far fa-hand-point-right"></i>
       </button>
+
+      <span>Pontuação: {{ getPoints }}</span>
     </div>
     <div v-else>Carregando</div>
   </div>
@@ -50,7 +56,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getQuestionList']),
+    ...mapGetters(['getQuestionList', 'getPoints']),
 
     currentQuestion() {
       return this.getQuestionList[this.questionIndex];
@@ -122,8 +128,52 @@ export default {
   &-text {
     margin-top: 1em;
     padding: 1em;
-    background-color: #f5f6fa;
+    background-color: #8e44ad;
+    color: #fff;
     border-radius: 2px;
+  }
+}
+
+.answer-list {
+  .answer {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0;
+
+    label {
+      background-color: #f5f6fa;
+      padding: 0.5em;
+      transition: all 0.2s;
+
+      &:hover {
+        cursor: pointer;
+        background-color: #3d3d3d;
+        color: #fff;
+        transform: scale(1.03);
+      }
+    }
+
+    input {
+      display: none;
+
+      &:checked ~ label {
+        background-color: #3d3d3d;
+        color: #fff;
+      }
+    }
+  }
+}
+
+.btn-next {
+  padding: 1em;
+  float: right;
+  border: 0;
+  background-color: #8e44ad;
+  color: #fff;
+
+  &:disabled {
+    background-color: #ddd;
+    color: #3d3d3d;
   }
 }
 </style>
